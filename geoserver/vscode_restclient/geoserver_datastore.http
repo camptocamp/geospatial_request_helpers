@@ -1,0 +1,211 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+
+@workspace=nexsis
+
+@store=db-vues
+
+### Datastores
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores
+Accept: application/xml
+Authorization: Basic {{credential}}
+
+### 1 Datastore
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/{{store}}
+Accept: application/xml
+Authorization: Basic {{credential}}
+
+### Delete 1 Datastore
+DELETE {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/{{store}}
+Accept: application/xml
+Authorization: Basic {{credential}}
+
+### FeatureType
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/{{store}}/featuretypes/ega_websig
+Accept: application/xml
+Authorization: Basic {{credential}}
+
+### Create FeatureType
+POST {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/{{store}}/featuretypes
+Accept: application/xml
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<featureType>
+  <name>dwa_internal_meterings_coco</name>
+  <nativeName>internal_meterings_coco</nativeName>
+  <title></title>
+
+  <keywords>
+  </keywords>
+  <nativeCRS></nativeCRS>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>-180.0</minx>
+    <maxx>180.0</maxx>
+    <miny>-90.0</miny>
+    <maxy>90.0</maxy>
+    <crs>EPSG:4326</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-180.0</minx>
+    <maxx>180.0</maxx>
+    <miny>-90.0</miny>
+    <maxy>90.0</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+
+  <metadata>
+    <entry key="elevation">
+      <dimensionInfo>
+        <enabled>false</enabled>
+      </dimensionInfo>
+    </entry>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>internal_meterings_coco</name>
+        <sql>WITH volume_ctx_site AS (&#xd;
+  SELECT &#xd;
+    ctx.bu_code AS bu_code,&#xd;
+    measured_process::jsonb-&gt;&apos;measured_process&apos;-&gt;0-&gt;&gt;&apos;measured_process_main_object_type&apos; AS measured_process_main_object_type,&#xd;
+    measured_process::jsonb-&gt;&apos;measured_process&apos;-&gt;0-&gt;&gt;&apos;measured_process_main_object_gid&apos; AS measured_process_main_object_gid&#xd;
+  FROM fo_measure_context_v1_0 as ctx&#xd;
+  WHERE ctx.quantity_code IN(&apos;Volume&apos;, &apos;VolumePerDuration&apos;)&#xd;
+  group by bu_code, measured_process_main_object_type, measured_process_main_object_gid&#xd;
+)&#xd;
+SELECT&#xd;
+ bu_code,&#xd;
+ monitoring_point.asset_gid,&#xd;
+ monitoring_point.asset_gid AS functional_location_gid_key,&#xd;
+ monitoring_point.operational_contract_gid AS contract_gid,&#xd;
+ monitoring_point.installation_name AS installation_name,&#xd;
+ monitoring_point.functional_location_geometry AS asset_geometry&#xd;
+  FROM volume_ctx_site&#xd;
+INNER JOIN&#xd;
+  (&#xd;
+-- Points de mesure en réseaux utilisés dans WLM uniquement&#xd;
+  SELECT&#xd;
+    &apos;FO_MONITORING_POINT&apos; AS object_fo,&#xd;
+    functional_location_gid as asset_gid,&#xd;
+    operational_contract_gid, functional_location_geometry, monitoring_point_name AS installation_name&#xd;
+  FROM fo_monitoring_point_v1_0&#xd;
+-- Réservoirs d&apos;eau utilisés dans WLM uniquement&#xd;
+  UNION ALL&#xd;
+  SELECT&#xd;
+    &apos;FO_WATER_RESERVOIR&apos; AS object_fo,&#xd;
+    asset_gid,&#xd;
+    operational_contract_gid, functional_location_geometry, asset_name AS installation_name&#xd;
+  FROM fo_water_reservoir&#xd;
+-- Installations génériques utilisées dans WRA (stations météo) et WLM (stations de surpression, d&apos;élévation, de pompage...)&#xd;
+  UNION ALL&#xd;
+  SELECT&#xd;
+    &apos;FO_INSTALLATION&apos; AS object_fo,&#xd;
+    asset_gid,&#xd;
+    operational_contract_gid, functional_location_geometry, asset_name AS installation_name&#xd;
+  FROM fo_water_installation_v2_0&#xd;
+-- Points de prélèvement d&apos;eau dans une ressource utilisés dans WRA uniquement&#xd;
+  UNION ALL&#xd;
+  SELECT&#xd;
+    &apos;FO_WATER_WITHDRAWAL&apos; AS object_fo,&#xd;
+    asset_gid,&#xd;
+    operational_contract_gid, functional_location_geometry, asset_name AS installation_name&#xd;
+  FROM fo_water_withdrawal_v1_0 where not water_is_purchased&#xd;
+-- Unités de production d&apos;eau potable utilisées dans WRA uniquement&#xd;
+  UNION ALL&#xd;
+  SELECT&#xd;
+    &apos;FO_WATER_PRODUCTION_UNIT&apos; AS object_fo,&#xd;
+    asset_gid,&#xd;
+    operational_contract_gid as contract_gid, functional_location_geometry, asset_name AS installation_name&#xd;
+  FROM fo_water_production_v1_0 where not water_is_purchased&#xd;
+  ) AS monitoring_point&#xd;
+ON volume_ctx_site.measured_process_main_object_type = monitoring_point.object_fo&#xd;
+AND volume_ctx_site.measured_process_main_object_gid = monitoring_point.asset_gid
+        </sql>
+        <escapeSql>false</escapeSql>
+        <keyColumn>functional_location_gid_key</keyColumn>
+        <geometry>
+          <name>asset_geometry</name>
+          <type>Point</type>
+          <srid>4326</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+    <entry key="time">
+      <dimensionInfo>
+        <enabled>false</enabled>
+      </dimensionInfo>
+    </entry>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>  
+</featureType>
+
+### Get DataStores
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Get 1 DataStores
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/{{store}}
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Create 1 Datastore
+POST {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<dataStore>
+  <name>db-referentiels-carto-osm-pregen</name>
+  <type>Generalizing data store</type>
+  <enabled>true</enabled>
+  <connectionParameters>
+    <entry key="RepositoryClassName">org.geoserver.data.gen.DSFinderRepository</entry>
+    <entry key="GeneralizationInfosProviderParam">pregeneralized.xml</entry>
+    <entry key="GeneralizationInfosProviderClassName">org.geoserver.data.gen.info.GeneralizationInfosProviderImpl</entry>
+    <entry key="namespace">http://geoserver.org/osm</entry>
+  </connectionParameters>
+</dataStore>
+
+### Update 1 Datastore
+PUT {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/{{store}}
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<dataStore>
+  <name>NaturalEarth</name>
+  <type>Directory of spatial files (shapefiles)</type>
+  <enabled>true</enabled>
+  <workspace>
+    <name>ne</name>
+    </workspace>
+    <connectionParameters>
+      <entry key="charset">ISO-8859-1</entry>
+      <entry key="filetype">shapefile</entry>
+      <entry key="create spatial index">true</entry>
+      <entry key="memory mapped buffer">false</entry>
+      <entry key="timezone">Europe/Paris</entry>
+      <entry key="enable spatial index">true</entry>
+      <entry key="namespace">www.ratp.fr</entry>
+      <entry key="cache and reuse memory maps">true</entry>
+      <entry key="skipScan">true</entry>
+      <entry key="url">file:data/ratp/idfm</entry>
+      <entry key="fstype">shape</entry>
+    </connectionParameters>
+    </dataStore>
+
+### Get FeatureTypes
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/featuretypes
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Get 1 FeatureType
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/test{{store}}_db/featuretypes/Adminbndy4_db
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### DELETE 1 FeatureType
+DELETE {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/{{store}}/featuretypes/dwa_internal_meterings_test
+Authorization: Basic {{credential}}
+Accept: application/xml

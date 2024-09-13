@@ -1,0 +1,111 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+
+### Trigger Backup WS QDN Only
+POST {{geoserver_url}}/rest/br/backup
+Authorization: Basic {{credential}}
+Content-Type: application/json
+
+{
+   "backup":{
+      "archiveFile":"/tmp/my_backup_2024_8.zip",
+      "overwrite":true,
+      "options":{
+        "option": ["BK_SKIP_SECURITY=true","BK_SKIP_SETTINGS=true","BK_SKIP_GWC=true","BK_CLEANUP_TEMP=true", "BK_BEST_EFFORT=true"]
+      },
+    "wsFilter": "name IN ('qdn')",
+    "siFilter": "name = 'donnees_externes'"
+   }
+}
+
+### Trigger Backup No filter
+POST {{geoserver_url}}/rest/br/backup
+Authorization: Basic {{credential}}
+Content-Type: application/json
+
+{
+   "backup":{
+      "archiveFile":"/tmp/my_backup_new_gen_light2.zip",
+      "overwrite":true,
+      "options":{
+        "option": ["BK_SKIP_SECURITY=true","BK_SKIP_SETTINGS=true","BK_SKIP_GWC=true","BK_CLEANUP_TEMP=true", "BK_BEST_EFFORT=true","exclude.file.path=/monitoring;/logs"]
+      },
+   }
+}
+
+### Trigger Backup WS Blue/Green Only
+POST {{geoserver_url}}/rest/br/backup
+Authorization: Basic {{credential}}
+Content-Type: application/json
+
+{
+   "backup":{
+      "archiveFile":"/tmp/my_backup_raster.zip",
+      "overwrite":true,
+      "options":{
+        "option": ["BK_SKIP_SECURITY=true","BK_SKIP_SETTINGS=true","BK_SKIP_GWC=true","BK_CLEANUP_TEMP=true", "BK_BEST_EFFORT=true"]
+      },
+    "wsFilter": "name IN ('qdn_plan_ign_blue','qdn_plan_ign_green')",
+    "siFilter": "name LIKE 'plan_ign_%'"
+   }
+}
+
+### Trigger Backup All
+POST {{geoserver_url}}/rest/br/backup
+Authorization: Basic {{credential}}
+Content-Type: application/json
+
+{
+   "backup":{
+      "archiveFile":"/tmp/my_backup_full.zip",
+      "overwrite":true,
+      "options":{
+        "option": ["BK_SKIP_SECURITY=true","BK_SKIP_SETTINGS=true","BK_SKIP_GWC=true","BK_CLEANUP_TEMP=true", "BK_BEST_EFFORT=true"]
+      },
+   }
+}
+
+### Trigger Restore No filter
+POST {{geoserver_url}}/rest/br/restore
+Authorization: Basic {{credential}}
+Content-Type: application/json
+
+{  
+   "restore":{
+      "archiveFile":"/opt/geoserver/data_dir/backup_restore/my_backup_new_gen_light2.zip",
+      "options":{
+        "option": ["BK_SKIP_SECURITY=true","BK_PURGE_RESOURCES=true","BK_SKIP_SETTINGS=true","BK_SKIP_GWC=true","BK_CLEANUP_TEMP=true", "BK_BEST_EFFORT=true"]
+      },
+   }
+}
+
+### Trigger Restore QDN
+POST {{geoserver_url}}/rest/br/restore
+Authorization: Basic {{credential}}
+Content-Type: application/json
+
+{  
+   "restore":{
+      "archiveFile":"/opt/geoserver/data_dir/backup_restore/my_backup_2024_8.zip",
+      "options":{
+        "option": ["BK_SKIP_SECURITY=true","BK_PURGE_RESOURCES=true","BK_SKIP_SETTINGS=true","BK_SKIP_GWC=true","BK_CLEANUP_TEMP=true", "BK_BEST_EFFORT=true"]
+      },
+    "wsFilter": "name = 'qdn'",
+    "siFilter": "name IN ('donnees_externes')",
+   }
+}
+
+### Trigger Restore Blue/Green
+POST {{geoserver_url}}/rest/br/restore
+Authorization: Basic {{credential}}
+Content-Type: application/json
+
+{
+   "restore":{
+      "archiveFile":"/opt/geoserver/data_dir/backup_restore/my_backup_raster.zip",
+      "options":{
+        "option": ["BK_SKIP_SECURITY=true","BK_PURGE_RESOURCES=true","BK_SKIP_SETTINGS=true","BK_SKIP_GWC=true","BK_CLEANUP_TEMP=true", "BK_BEST_EFFORT=true"]
+      },
+    "wsFilter": "name IN ('qdn_plan_ign_green')"
+   }
+}

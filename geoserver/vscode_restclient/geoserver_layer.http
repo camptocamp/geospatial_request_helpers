@@ -1,0 +1,97 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+
+@workspace=osm
+
+
+### Get Layer List No workspace
+GET {{geoserver_url}}/rest/layers
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Get Layer List
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layers
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Get 1 Layer
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layers/fdp_normal
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Create simple layer group
+POST {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<layerGroup>
+    <name>fdp_normal</name>
+    <mode>SINGLE</mode>
+    <title>fdp_normal</title>
+    <publishables>
+        <published type="layer">
+            <name>simplified_water_polygons</name>
+        </published>
+    </publishables>
+    <styles>
+        <style>
+            <name>osm:simplified_water</name>
+        </style>
+    </styles>
+    <bounds>
+        <minx>-2.0237886e+07</minx>
+        <maxx>2.0237886e+07</maxx>
+        <miny>-2.0237886e+07</miny>
+        <maxy>2.0237886e+07</maxy>
+        <crs class="projected">EPSG:3857</crs>
+    </bounds>
+    <metadataLinks></metadataLinks>
+    <keywords></keywords>
+</layerGroup>
+
+### Create layer group
+POST {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<layerGroup>
+    <name>test_fdp</name>
+    <mode>SINGLE</mode>
+    <title>test_fdp</title>
+    <publishables>
+        <published type="layer">
+            <name>fdp_zone_occupation_sol_vue_foret</name>
+        </published>
+        <published type="layer">
+            <name>fdp_zone_occupation_sol_vue_bati</name>
+        </published>
+    </publishables>
+    <styles>
+        <style>
+            <name>zone_occupation_sol_vue_foret</name>
+        </style>
+        <style>
+            <name>zone_occupation_sol_vue_bati</name>
+        </style>
+    </styles>
+    <bounds>
+        <minx>-63.16</minx>
+        <maxx>55.84</maxx>
+        <miny>-21.4</miny>
+        <maxy>51.2</maxy>
+        <crs class="projected">EPSG:4326</crs>
+    </bounds>
+    <metadataLinks></metadataLinks>
+    <keywords></keywords>
+</layerGroup>
+
+
+### Get GS Layers
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layers
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Get 1 GS Layer
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layers/PLANIGN08_0040_6350_L93
+Authorization: Basic {{credential}}
+Accept: application/xml

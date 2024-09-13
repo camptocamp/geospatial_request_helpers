@@ -1,0 +1,7 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+
+### Get all url checks on server
+GET {{geoserver_url}}/rest/urlchecks
+Authorization: Basic {{credential}}
+Accept: application/xml

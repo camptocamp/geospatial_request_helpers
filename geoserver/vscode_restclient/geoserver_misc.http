@@ -1,0 +1,37 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+
+### System status
+GET {{geoserver_url}}/rest/about/status
+Accept: application/xml
+Authorization: Basic {{credential}}
+
+### Get Extensions
+GET {{geoserver_url}}/rest/about/manifest
+Authorization: Basic {{credential}}
+Accept: application/json
+
+### Get Versions
+GET {{geoserver_url}}/rest/about/version?manifest=GeoServer
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Reload configuration
+PUT {{geoserver_url}}/rest/reload
+Authorization: Basic {{credential}}
+
+### Get Log information
+GET {{geoserver_url}}/rest/logging.xml
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Put Log information
+PUT {{geoserver_url}}/rest/logging
+Authorization: Basic {{credential}}
+Accept: application/xml
+Content-Type: application/xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<logging>
+	<level>PRODUCTION_LOGGING</level>
+</logging>

@@ -1,0 +1,100 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+@workspace=ign
+@store=IGN
+
+### List WMTS Stores
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/wmtsstores
+Accept: application/xml 
+Authorization: Basic {{credential}}
+
+### 1 WMTS Stores
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/wmtsstores/{{store}}
+Accept: application/xml 
+Authorization: Basic {{credential}}
+
+### Post 1 WMTS Stores
+POST {{geoserver_url}}/rest/workspaces/{{workspace}}/wmtsstores
+Content-Type: application/xml
+Authorization: Basic {{credential}}
+
+<wmtsStore>
+  <name>IGN</name>
+  <description>IGN</description>
+  <type>WMTS</type>
+  <capabilitiesURL>https://data.geopf.fr/wmts?SERVICE=WMTS&amp;VERSION=1.0.0&amp;REQUEST=GetCapabilities</capabilitiesURL>
+</wmtsStore>
+
+
+### All WMTS Layers - No datastore
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/wmtslayers.xml
+Accept: application/xml 
+Authorization: Basic {{credential}}
+
+### All WTMS Layers - Datastore
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/wmtsstores/{{store}}/layers.xml
+Accept: application/xml 
+Authorization: Basic {{credential}}
+
+### 1 WMS Layer
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/wmsstores/{{store}}/wmslayers/ORTHOIMAGERY.ORTHOPHOTOS.xml
+Accept: application/xml 
+Authorization: Basic {{credential}}
+
+### POST 1 WMTS Layers
+POST {{geoserver_url}}/rest/workspaces/{{workspace}}/wmtsstores/{{store}}/layers
+Content-Type: application/xml 
+Authorization: Basic {{credential}}
+
+<wmtsLayer>
+  <name>ORTHOIMAGERY.ORTHOPHOTOS</name>
+  <nativeName>ORTHOIMAGERY.ORTHOPHOTOS</nativeName>
+  <namespace>
+    <name>ign</name>
+    </namespace>
+    <title></title>
+    <description>Photographies aériennes</description>
+    <abstract></abstract>
+    <nativeCRS class="projected">PROJCS[&quot;WGS 84 / Pseudo-Mercator&quot;, 
+  GEOGCS[&quot;WGS 84&quot;, 
+    DATUM[&quot;World Geodetic System 1984&quot;, 
+      SPHEROID[&quot;WGS 84&quot;, 6378137.0, 298.257223563, AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]], 
+      AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]], 
+    PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+    UNIT[&quot;degree&quot;, 0.017453292519943295], 
+    AXIS[&quot;Geodetic longitude&quot;, EAST], 
+    AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]], 
+  PROJECTION[&quot;Popular Visualisation Pseudo Mercator&quot;], 
+  PARAMETER[&quot;semi_minor&quot;, 6378137.0], 
+  PARAMETER[&quot;latitude_of_origin&quot;, 0.0], 
+  PARAMETER[&quot;central_meridian&quot;, 0.0], 
+  PARAMETER[&quot;scale_factor&quot;, 1.0], 
+  PARAMETER[&quot;false_easting&quot;, 0.0], 
+  PARAMETER[&quot;false_northing&quot;, 0.0], 
+  UNIT[&quot;m&quot;, 1.0], 
+  AXIS[&quot;Easting&quot;, EAST], 
+  AXIS[&quot;Northing&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;3857&quot;]]</nativeCRS>
+    <srs>EPSG:3857</srs>
+    <nativeBoundingBox>
+      <minx>-2.0037508342789244E7</minx>
+      <maxx>2.0037508342789244E7</maxx>
+      <miny>-3.024097195838617E7</miny>
+      <maxy>3.0240971958386205E7</maxy>
+      <crs class="projected">EPSG:3857</crs>
+    </nativeBoundingBox>
+    <latLonBoundingBox>
+      <minx>-180.0</minx>
+      <maxx>180.0</maxx>
+      <miny>-90.0</miny>
+      <maxy>90.0</maxy>
+      <crs>EPSG:4326</crs>
+    </latLonBoundingBox>
+    <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+    <enabled>true</enabled>
+      <serviceConfiguration>false</serviceConfiguration>
+      <forcedRemoteStyle></forcedRemoteStyle>
+      <preferredFormat>image/png</preferredFormat>
+      <metadataBBoxRespected>false</metadataBBoxRespected>
+    </wmtsLayer>

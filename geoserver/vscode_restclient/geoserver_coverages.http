@@ -1,0 +1,199 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+@workspace=qdn_plan_ign_blue
+@store=plan_ign_D0xx_08
+@coverage=PLANIGN08_0040_6350_L93
+@s3_url={{env_s3_url}}
+
+### Get Coverage Store
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/coveragestores/{{store}}
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Initialize Coverage Store
+POST {{geoserver_url}}/rest/workspaces/{{workspace}}/coveragestores/{{store}}/remote.imagemosaic
+Authorization: Basic {{credential}}
+Content-Type: text/plain
+
+{{s3_url}}/blue/plan_ign_D0xx/08/PLANIGN08_0040_6750_L93.tif
+
+### Get Coverage
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/coveragestores/{{store}}/coverages/{{coverage}}
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Put Coverage
+PUT {{geoserver_url}}/rest/workspaces/{{workspace}}/coveragestores/{{store}}/coverages/{{coverage}}
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<coverage>
+  <name>PLANIGN08_0040_6350_L93</name>
+  <nativeName>PLANIGN08_0040_6350_L93</nativeName>
+  <namespace>
+    <name>qdn</name>
+    </namespace>
+    <title>PLANIGN08_0040_6350_L93</title>
+    <description>Generated from GeoTIFF</description>
+    <keywords>
+      <string>PLANIGN08_0040_6350_L93</string>
+      <string>WCS</string>
+      <string>GeoTIFF</string>
+    </keywords>
+    <nativeCRS class="projected">PROJCS[&quot;RGF93 / Lambert-93&quot;, 
+  GEOGCS[&quot;RGF93&quot;, 
+    DATUM[&quot;Reseau Geodesique Francais 1993&quot;, 
+      SPHEROID[&quot;GRS 1980&quot;, 6378137.0, 298.257222101, AUTHORITY[&quot;EPSG&quot;,&quot;7019&quot;]], 
+      TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+      AUTHORITY[&quot;EPSG&quot;,&quot;6171&quot;]], 
+    PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+    UNIT[&quot;degree&quot;, 0.017453292519943295], 
+    AXIS[&quot;Geodetic longitude&quot;, EAST], 
+    AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;4171&quot;]], 
+  PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;, AUTHORITY[&quot;EPSG&quot;,&quot;9802&quot;]], 
+  PARAMETER[&quot;central_meridian&quot;, 3.0], 
+  PARAMETER[&quot;latitude_of_origin&quot;, 46.5], 
+  PARAMETER[&quot;standard_parallel_1&quot;, 49.0], 
+  PARAMETER[&quot;false_easting&quot;, 700000.0], 
+  PARAMETER[&quot;false_northing&quot;, 6600000.0], 
+  PARAMETER[&quot;scale_factor&quot;, 1.0], 
+  PARAMETER[&quot;standard_parallel_2&quot;, 44.0], 
+  UNIT[&quot;m&quot;, 1.0], 
+  AXIS[&quot;Easting&quot;, EAST], 
+  AXIS[&quot;Northing&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;2154&quot;]]</nativeCRS>
+    <srs>EPSG:2154</srs>
+    <nativeBoundingBox>
+      <minx>40000.0</minx>
+      <maxx>240000.0</maxx>
+      <miny>6150000.0</miny>
+      <maxy>6350000.0</maxy>
+      <crs class="projected">EPSG:2154</crs>
+    </nativeBoundingBox>
+    <latLonBoundingBox>
+      <minx>-5.234910862499916</minx>
+      <maxx>-2.574015490492305</maxx>
+      <miny>42.149768864429454</miny>
+      <maxy>44.098195539631725</maxy>
+      <crs>EPSG:4326</crs>
+    </latLonBoundingBox>
+    <projectionPolicy>REPROJECT_TO_DECLARED</projectionPolicy>
+    <enabled>true</enabled>
+    <metadata>
+      <entry key="dirName">test_geotiff_ign_PLANIGN08_0040_6350_L93</entry>
+    </metadata>
+    <store class="coverageStore">
+      <name>qdn:test_geotiff_ign</name>
+      </store>
+      <serviceConfiguration>false</serviceConfiguration>
+      <simpleConversionEnabled>false</simpleConversionEnabled>
+      <internationalTitle/>
+      <internationalAbstract/>
+      <nativeFormat>GeoTIFF</nativeFormat>
+      <grid dimension="2">
+        <range>
+          <low>0 0</low>
+          <high>500 500</high>
+        </range>
+        <transform>
+          <scaleX>400.0</scaleX>
+          <scaleY>-400.0</scaleY>
+          <shearX>0.0</shearX>
+          <shearY>0.0</shearY>
+          <translateX>40200.0</translateX>
+          <translateY>6349800.0</translateY>
+        </transform>
+        <crs>EPSG:2154</crs>
+      </grid>
+      <supportedFormats>
+        <string>ERDASImg</string>
+        <string>ImagePyramid</string>
+        <string>RST</string>
+        <string>EHdr</string>
+        <string>NITF</string>
+        <string>RPFTOC</string>
+        <string>SRP</string>
+        <string>GEOTIFF</string>
+        <string>DTED</string>
+        <string>ArcGrid</string>
+        <string>ENVIHdr</string>
+        <string>AIG</string>
+        <string>GIF</string>
+        <string>PNG</string>
+        <string>JPEG</string>
+        <string>TIFF</string>
+        <string>GeoPackage (mosaic)</string>
+        <string>ImageMosaic</string>
+        <string>VRT</string>
+      </supportedFormats>
+      <interpolationMethods>
+        <string>nearest neighbor</string>
+        <string>bilinear</string>
+        <string>bicubic</string>
+      </interpolationMethods>
+      <defaultInterpolationMethod>nearest neighbor</defaultInterpolationMethod>
+      <dimensions>
+        <coverageDimension>
+          <name>RED_BAND</name>
+          <description>GridSampleDimension[-Infinity,Infinity]</description>
+          <range>
+            <min>-inf</min>
+            <max>inf</max>
+          </range>
+          <unit>W.m-2.Sr-1</unit>
+          <dimensionType>
+            <name>UNSIGNED_8BITS</name>
+          </dimensionType>
+        </coverageDimension>
+        <coverageDimension>
+          <name>GREEN_BAND</name>
+          <description>GridSampleDimension[-Infinity,Infinity]</description>
+          <range>
+            <min>-inf</min>
+            <max>inf</max>
+          </range>
+          <unit>W.m-2.Sr-1</unit>
+          <dimensionType>
+            <name>UNSIGNED_8BITS</name>
+          </dimensionType>
+        </coverageDimension>
+        <coverageDimension>
+          <name>BLUE_BAND</name>
+          <description>GridSampleDimension[-Infinity,Infinity]</description>
+          <range>
+            <min>-inf</min>
+            <max>inf</max>
+          </range>
+          <unit>W.m-2.Sr-1</unit>
+          <dimensionType>
+            <name>UNSIGNED_8BITS</name>
+          </dimensionType>
+        </coverageDimension>
+      </dimensions>
+      <requestSRS>
+        <string>EPSG:2154</string>
+      </requestSRS>
+      <responseSRS>
+        <string>EPSG:2154</string>
+      </responseSRS>
+      <parameters>
+        <entry>
+          <string>InputTransparentColor</string>
+          <null/>
+        </entry>
+        <entry>
+          <string>SUGGESTED_TILE_SIZE</string>
+          <string>512,512</string>
+        </entry>
+        <entry>
+          <string>Bands</string>
+          <null/>
+        </entry>
+        <entry>
+          <string>RescalePixels</string>
+          <boolean>false</boolean>
+        </entry>
+      </parameters>
+      <nativeCoverageName>PLANIGN08_0040_6350_L93</nativeCoverageName>
+    </coverage>

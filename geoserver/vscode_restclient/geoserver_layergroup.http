@@ -1,0 +1,256 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+@workspace=osm
+
+### Get all Layer Groups
+GET {{geoserver_url}}/rest/layergroups
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Get Layer Groups
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Get 1 Layer Group No workspace
+GET {{geoserver_url}}/rest/layergroups/osm_normal_plus
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Get 1 Layer Group
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups/fdp_normal
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Create simple layer group
+POST {{geoserver_url}}/rest/layergroups
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<layerGroup>
+  <name>osm_normal_plus_2</name>
+  <mode>SINGLE</mode>
+  <title>osm_normal_plus_2</title>
+  <publishables>
+    <published type="layerGroup">
+      <name>osm:fdp_normal</name>
+      </published>
+    </publishables>
+    <styles>
+      <style/>
+    </styles>
+    <bounds>
+      <minx>-2.0037508342789244E7</minx>
+      <maxx>2.0037508342789244E7</maxx>
+      <miny>-2.00489661040146E7</miny>
+      <maxy>2.0048966104014594E7</maxy>
+      <crs class="projected">EPSG:3857</crs>
+    </bounds>
+  </layerGroup>
+
+### Create layer group
+POST {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<layerGroup>
+    <name>test_fdp</name>
+    <mode>SINGLE</mode>
+    <title>test_fdp</title>
+    <publishables>
+        <published type="layer">
+            <name>fdp_zone_occupation_sol_vue_foret</name>
+        </published>
+        <published type="layer">
+            <name>fdp_zone_occupation_sol_vue_bati</name>
+        </published>
+    </publishables>
+    <styles>
+        <style>
+            <name>zone_occupation_sol_vue_foret</name>
+        </style>
+        <style>
+            <name>zone_occupation_sol_vue_bati</name>
+        </style>
+    </styles>
+    <bounds>
+        <minx>-63.16</minx>
+        <maxx>55.84</maxx>
+        <miny>-21.4</miny>
+        <maxy>51.2</maxy>
+        <crs class="projected">EPSG:4326</crs>
+    </bounds>
+    <metadataLinks></metadataLinks>
+    <keywords></keywords>
+</layerGroup>
+
+
+### Update layer group
+PUT {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups/plan_ign_D0xx
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<layerGroup>
+  <name>plan_ign_D0xx</name>
+  <mode>SINGLE</mode>
+  <title>Plan IGN - Zone D0xx</title>
+  <workspace>
+    <name>qdn_plan_ign_blue</name>
+  </workspace>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <publishables>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_17</name>
+    </published>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_16</name>
+    </published>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_15</name>
+    </published>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_14</name>
+    </published>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_13</name>
+    </published>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_12</name>
+    </published>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_11</name>
+    </published>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_10</name>
+    </published>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_09</name>
+    </published>
+    <published type="layer">
+      <name>qdn_plan_ign_blue:plan_ign_D0xx_08</name>
+    </published>
+  </publishables>
+  <styles>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_17</name>
+    </style>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_16</name>
+    </style>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_15</name>
+    </style>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_14</name>
+    </style>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_13</name>
+    </style>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_12</name>
+    </style>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_11</name>
+    </style>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_10</name>
+    </style>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_09</name>
+    </style>
+    <style>
+      <name>qdn_plan_ign_blue:plan_ign_08</name>
+    </style>
+  </styles>
+  <bounds>
+    <minx>-180.0</minx>
+    <maxx>180.0</maxx>
+    <miny>-90.0</miny>
+    <maxy>90.0</maxy>
+    <crs>EPSG:4326</crs>
+  </bounds>
+  <dateCreated>2024-06-04 13:51:08.648 UTC</dateCreated>
+  <dateModified>2024-06-06 09:19:24.581 UTC</dateModified>
+  <layerGroupStyles>
+    <LayerGroupStyle>
+      <name>couleur</name>
+      <internationalTitle/>
+      <internationalAbstract/>
+      <layers>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_17</name>
+        </published>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_16</name>
+        </published>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_15</name>
+        </published>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_14</name>
+        </published>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_13</name>
+        </published>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_12</name>
+        </published>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_11</name>
+        </published>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_10</name>
+        </published>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_09</name>
+        </published>
+        <published type="layer">
+          <name>qdn_plan_ign_blue:plan_ign_D0xx_08</name>
+        </published>
+      </layers>
+      <styles>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_17_couleur</name>
+        </style>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_16_couleur</name>
+        </style>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_15_couleur</name>
+        </style>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_14_couleur</name>
+        </style>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_13_couleur</name>
+        </style>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_12_couleur</name>
+        </style>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_11_couleur</name>
+        </style>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_10_couleur</name>
+        </style>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_09_couleur</name>
+        </style>
+        <style>
+          <name>qdn_plan_ign_blue:plan_ign_08_couleur</name>
+        </style>
+      </styles>
+    </LayerGroupStyle>
+  </layerGroupStyles>
+</layerGroup>
+
+### Get GS Layers
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layers
+Authorization: Basic {{credential}}
+Accept: application/xml
+
+### Get 1 GS Layer
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layers/PLANIGN08_0040_6350_L93
+Authorization: Basic {{credential}}
+Accept: application/xml
