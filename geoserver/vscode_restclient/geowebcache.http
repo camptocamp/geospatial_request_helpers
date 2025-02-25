@@ -1,7 +1,12 @@
-@geowebcache_url={{env_geoserver_url}}/rest
+@geowebcache_url={{env_geoserver_url}}/gwc/rest
 @credential={{env_credential}}
-@gwc_layer=nexsis_fdp_nexsis
+@gwc_layer=ilots_origines
 @wms_url=
+
+### Get Global Configuration
+GET {{geowebcache_url}}/global
+Authorization: Basic {{credential}}
+Accept: application/xml
 
 ### Get GridSets
 GET {{geowebcache_url}}/gridsets
@@ -141,8 +146,8 @@ Content-Type: application/xml
     </gridSubset>
   </gridSubsets>
   <metaWidthHeight>
-    <int>4</int>
-    <int>4</int>
+    <int>10</int>
+    <int>10</int>
   </metaWidthHeight>
   <expireCache>0</expireCache>
   <expireClients>0</expireClients>
@@ -159,15 +164,14 @@ Content-Type: application/xml
 </wmsLayer>
 
 ###
-PUT {{geowebcache_url}}/layers/nexsis_fdp_nexsis
+PUT {{geowebcache_url}}/layers/ign_orthophotos
 Authorization: Basic {{credential}}
 Accept: application/xml
 Content-Type: application/xml
 
 <wmsLayer>
-  <blobStoreId>s3_blobstore</blobStoreId>
   <enabled>true</enabled>
-  <name>nexsis_fdp_nexsis</name>
+  <name>ign_orthophotos</name>
   <mimeFormats>
     <string>image/png</string>
     <string>image/jpeg</string>
@@ -192,13 +196,13 @@ Content-Type: application/xml
   <backendTimeout>120</backendTimeout>
   <cacheBypassAllowed>false</cacheBypassAllowed>
   <wmsUrl>
-    <string>{{wms_url}}</string>
+    <string>https://data.geopf.fr/wms-r?</string>
   </wmsUrl>
-  <wmsLayers>fdp:nexsis_fdp_normal</wmsLayers>
+  <wmsLayers>ORTHOIMAGERY.ORTHOPHOTOS</wmsLayers>
   <gutter>0</gutter>
-  <concurrency>32</concurrency>
+  <wmsVersion>1.3.0</wmsVersion>
   <transparent>false</transparent>
-  <bgColor>0xAAD5E9</bgColor>  
+  <concurrency>32</concurrency>
 </wmsLayer>
 
 ### Get Blobstores list
@@ -212,23 +216,23 @@ Authorization: Basic {{credential}}
 Accept: application/xml
 
 ### Create S3 Blobstore
-PUT {{geowebcache_url}}/blobstores/cache-nexsis-fdp
+PUT {{geowebcache_url}}/blobstores/cache_gwc
 Authorization: Basic {{credential}}
 Accept: application/xml
 Content-Type: application/xml
 
 <S3BlobStore default="false">
-  <id>cache-nexsis-fdp</id>
+  <id>cache_gwc</id>
   <enabled>true</enabled>
-  <bucket>nexsis-dev-cache-fond-plan-nexsis</bucket>
-  <prefix>gwc_master</prefix>
-  <awsAccessKey>SCWC1NWHZAD33ZTDNQ3W</awsAccessKey>
+  <bucket>cacheraster</bucket>
+  <prefix>demo</prefix>
+  <awsAccessKey>admin</awsAccessKey>
   <awsSecretKey>0c2275fd-e978-4885-bd39-96cf345af461</awsSecretKey>
   <access>PRIVATE</access>
   <maxConnections>50</maxConnections>
   <useHTTPS>true</useHTTPS>
   <useGzip>false</useGzip>
-  <endpoint>ZZZZZ</endpoint>
+  <endpoint>https://s3.gra.io.cloud.ovh.net/</endpoint>
 </S3BlobStore>
 
 ### Create File Blobstore
@@ -270,7 +274,7 @@ Content-Type: text/xml
   <gridSetId>EPSG:3857</gridSetId>
   <zoomStart>0</zoomStart>
   <!-- This will be reduced to 3, since the layer is only defined for 0-3 -->
-  <zoomStop>6</zoomStop>
+  <zoomStop>15</zoomStop>
   <format>image/png</format>
 
   <!-- type can be * seed (add tiles) * reseed (replace tiles) * truncate (remove tiles) -->
@@ -278,13 +282,13 @@ Content-Type: text/xml
 
   <!-- Number of seeding threads to run in parallel.
        If type == truncate only one thread will be used regardless of this parameter -->
-  <threadCount>8</threadCount>
+  <threadCount>16</threadCount>
   <!-- Parameter filters -->
   <parameters/>
 </seedRequest>
 
 ### Trigger Seeding in JSON
-POST {{geowebcache_url}}/seed/{{gwc_layer}}
+POST {{geowebcache_url}}/seed/{{gwc_layer}}.json
 Authorization: Basic {{credential}}
 Content-Type: application/json
 
@@ -314,3 +318,22 @@ Content-Type: text/xml
 GET {{geowebcache_url}}/diskquota.xml
 Authorization: Basic {{credential}}
 Accept: application/xml
+
+### Update disk quota - not available in gs cloud
+PUT {{geowebcache_url}}/diskquota
+Authorization: Basic {{credential}}
+Content-Type: text/xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<org.geowebcache.diskquota.DiskQuotaConfig>
+  <enabled>true</enabled>
+  <cacheCleanUpFrequency>2</cacheCleanUpFrequency>
+  <cacheCleanUpUnits>DAYS</cacheCleanUpUnits>
+  <maxConcurrentCleanUps>1</maxConcurrentCleanUps>
+  <globalExpirationPolicyName>LRU</globalExpirationPolicyName>
+  <globalQuota>
+    <id>0</id>
+    <bytes>21474836480</bytes>
+  </globalQuota>
+  <layerQuotas/>
+</org.geowebcache.diskquota.DiskQuotaConfig>

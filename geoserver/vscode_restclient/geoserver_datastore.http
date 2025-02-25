@@ -21,7 +21,7 @@ Accept: application/xml
 Authorization: Basic {{credential}}
 
 ### FeatureType
-GET {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/{{store}}/featuretypes/ega_websig
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/datastores/{{store}}/featuretypes/operation_websig
 Accept: application/xml
 Authorization: Basic {{credential}}
 

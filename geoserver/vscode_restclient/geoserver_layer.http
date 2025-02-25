@@ -15,7 +15,7 @@ Authorization: Basic {{credential}}
 Accept: application/xml
 
 ### Get 1 Layer
-GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layers/fdp_normal
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layers/osm_places
 Authorization: Basic {{credential}}
 Accept: application/xml
 

@@ -1,0 +1,21 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+
+@workspace=nexsis
+
+### Get Workspaces
+GET {{geoserver_url}}/rest/workspaces
+Accept: application/xml
+Authorization: Basic {{credential}}
+
+### Create Workspace
+POST {{geoserver_url}}/rest/workspaces
+Content-type: text/xml
+Authorization: Basic {{credential}}
+
+<workspace><name>acme</name></workspace>
+
+### Delete Workspace
+DELETE {{geoserver_url}}/rest/workspaces/acme
+Content-type: text/xml
+Authorization: Basic {{credential}}

@@ -1,0 +1,14 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+
+@workspace=nexsis
+
+### Get WMS service configuration
+GET {{geoserver_url}}/rest/services/wms/settings
+Accept: application/xml
+Authorization: Basic {{credential}}
+
+### Get WMS service configuration for workspace
+GET {{geoserver_url}}/rest/services/wms/workspaces/{{workspace}}/settings
+Accept: application/xml
+Authorization: Basic {{credential}}

@@ -1,19 +1,24 @@
 @geoserver_url={{env_geoserver_url}}
 @credential={{env_credential}}
-@workspace=osm
+@workspace=fdp
 
 ### Retrieve style
-GET {{geoserver_url}}/rest/workspaces/{{workspace}}/styles/construction_lineaire.sld
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/styles/zone_occupation_sol_vue_foret
 Accept: application/xml 
 Authorization: Basic {{credential}}
 
 ### Retrieve style MBSTYLE
-GET {{geoserver_url}}/rest/workspaces/{{workspace}}/styles/construction_lineaire.mbstyle
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/styles/zone_occupation_sol_vue_foret.mbstyle
+Accept: application/vnd.geoserver.mbstyle+json
+Authorization: Basic {{credential}}
+
+### Retrieve style MBSTYLE No Workspace
+GET {{geoserver_url}}/rest/styles/test_mbstyle_rest.mbstyle
 Accept: application/vnd.geoserver.mbstyle+json
 Authorization: Basic {{credential}}
 
 ### Retrieve style CSS
-GET {{geoserver_url}}/rest/workspaces/{{workspace}}/styles/simplified_water_positron.css
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/styles/simplified_water_positron
 Accept: application/vnd.geoserver.geocss+css
 Content-Type: application/vnd.geoserver.geocss+css
 Authorization: Basic {{credential}}

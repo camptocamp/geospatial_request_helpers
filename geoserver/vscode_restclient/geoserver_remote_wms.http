@@ -1,7 +1,7 @@
 @geoserver_url={{env_geoserver_url}}
 @credential={{env_credential}}
 @workspace=ign
-@store=IGN
+@store=geoplateforme
 
 ### List WMS Stores
 GET {{geoserver_url}}/rest/workspaces/{{workspace}}/wmsstores

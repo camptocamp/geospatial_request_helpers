@@ -18,7 +18,7 @@ Authorization: Basic {{credential}}
 Accept: application/xml
 
 ### Get 1 Layer Group
-GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups/fdp_normal
+GET {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups/fdp_positron
 Authorization: Basic {{credential}}
 Accept: application/xml
 
@@ -28,25 +28,33 @@ Authorization: Basic {{credential}}
 Content-Type: application/xml
 
 <layerGroup>
-  <name>osm_normal_plus_2</name>
+  <name>test_api</name>
   <mode>SINGLE</mode>
-  <title>osm_normal_plus_2</title>
+  <title>test_api</title>
+  <workspace>
+    <name>nexsis</name>
+  </workspace>
   <publishables>
     <published type="layerGroup">
-      <name>osm:fdp_normal</name>
+      <name>nexsis:ligne_electrique_pylone</name>
       </published>
-    </publishables>
-    <styles>
-      <style/>
-    </styles>
-    <bounds>
-      <minx>-2.0037508342789244E7</minx>
-      <maxx>2.0037508342789244E7</maxx>
-      <miny>-2.00489661040146E7</miny>
-      <maxy>2.0048966104014594E7</maxy>
-      <crs class="projected">EPSG:3857</crs>
-    </bounds>
-  </layerGroup>
+      <published type="layerGroup">
+        <name>nexsis:limites_administratives</name>
+        </published>
+      </publishables>
+      <styles>
+        <style/>
+        <style/>
+      </styles>
+      <bounds>
+        <minx>-180.0</minx>
+        <maxx>180.0</maxx>
+        <miny>-90.0</miny>
+        <maxy>90.0</maxy>
+        <crs>EPSG:4326</crs>
+      </bounds>
+    </layerGroup>
+
 
 ### Create layer group
 POST {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups
@@ -84,6 +92,38 @@ Content-Type: application/xml
     <keywords></keywords>
 </layerGroup>
 
+### Update layer group
+PUT {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups/test_api
+Authorization: Basic {{credential}}
+Content-Type: application/xml
+
+<layerGroup>
+  <name>test_api</name>
+  <mode>SINGLE</mode>
+  <title>test_api</title>
+  <workspace>
+    <name>nexsis</name>
+  </workspace>
+  <publishables>
+    <published type="layerGroup">
+      <name>nexsis:ligne_electrique_pylone</name>
+      </published>
+      <published type="layerGroup">
+        <name>nexsis:limites_administratives</name>
+        </published>
+      </publishables>
+      <styles>
+        <style/>
+        <style/>
+      </styles>
+      <bounds>
+        <minx>-180.0</minx>
+        <maxx>180.0</maxx>
+        <miny>-90.0</miny>
+        <maxy>90.0</maxy>
+        <crs>EPSG:4326</crs>
+      </bounds>
+    </layerGroup>
 
 ### Update layer group
 PUT {{geoserver_url}}/rest/workspaces/{{workspace}}/layergroups/plan_ign_D0xx

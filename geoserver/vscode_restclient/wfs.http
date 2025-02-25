@@ -1,0 +1,9 @@
+@geoserver_url={{env_geoserver_url}}
+@credential={{env_credential}}
+@workspace=qdn
+@featuretype=ppr
+
+# Get featureId
+GET {{geoserver_url}}/wfs?service=wfs&version=2.0.0&request=GetFeature&typeNames={{workspace}}:{{featuretype}}&featureId=1
+Accept: application/json 
+Authorization: Basic {{credential}}
